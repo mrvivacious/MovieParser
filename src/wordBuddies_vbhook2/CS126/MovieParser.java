@@ -4,14 +4,18 @@ package wordBuddies_vbhook2.CS126;
  * Created by vbhook2
  */
 
-//?? Test cases. Upload to svn.
+//?? Test cases. Upload to svn. genre validize input
 import com.google.gson.Gson;
-import java.util.Scanner;
 
+import java.util.Scanner;
 /**
  * This class will use gson to extract specified data from a json array of movies
  */
 public class MovieParser {
+    public static Gson gson = new Gson();
+    public static Scanner scan = new Scanner(System.in);
+    public static MovieCollection collector = gson.fromJson(JsonText.Json, MovieCollection.class);
+    public static MovieObject[] movieList = collector.getResults();
     //Bad style practice, forgive meeeeeeeeeeeeeee
     public final static String genreList = "The list of all genres, along with their respective IDs:\n" +
             "Action      28\n" +
@@ -32,7 +36,7 @@ public class MovieParser {
             "TV Movie    10770\n" +
             "Thriller    53\n" +
             "War         10752\n" +
-            "Western     37.";
+            "Western     37.\n";
 
     /**
      * User will select which list of movies, then main method will call methods from
@@ -40,10 +44,7 @@ public class MovieParser {
      * @param args
      */
     public static void main(String[] args) {
-        Gson gson = new Gson();
-        Scanner scan = new Scanner(System.in);
-        MovieCollection collector = gson.fromJson(JsonText.Json, MovieCollection.class);
-        MovieObject[] movieList = collector.getResults();
+
         int all = 1;
         int genres = 2;
         int vote = 3;
@@ -51,21 +52,18 @@ public class MovieParser {
 
         //helper function
         welcomeMessage();
+
         int userInput = scan.nextInt();
         System.out.println();
-        while( userInput != 1 && userInput != 2 && userInput != 3 && userInput != 4 ) {
-            System.out.println("Please enter a valid number.");
-            System.out.print("If you want all the movies, enter 1\n" +
-                    "If you want movies from a certain genre, enter 2\n" +
-                    "If you want movies exceeding a certain vote, enter 3\n" +
-                    "If you want movies exceeding a certain popularity, enter 4: ");
+        while( userInput != all && userInput != genres && userInput != vote && userInput != popular ) {
+            validInput();
             userInput = scan.nextInt();
             System.out.println();
         }
 
         //print all movies
         if ( userInput == all ) {
-            MovieCollection.allMovies( movieList );
+            System.out.print( MovieCollection.allMovies( movieList ) );
             System.out.println();
         }
         //print genre-specific movies
@@ -73,7 +71,7 @@ public class MovieParser {
             System.out.println( genreList );
             System.out.print("Enter the desired genre's ID:");
             int ID = scan.nextInt();
-            MovieCollection.genre( movieList, ID );
+            System.out.print( MovieCollection.genre( movieList, ID ));
             System.out.println();
         }
         //print movies in relation to a vote number
@@ -81,7 +79,7 @@ public class MovieParser {
             //9 because highest in data is 8.1
             System.out.print("Enter a vote between 0.0 and 9.0, inclusive:");
             double votes = scan.nextDouble();
-            MovieCollection.exceedVotes( movieList, votes );
+            System.out.print( MovieCollection.exceedVotes( movieList, votes ));
             System.out.println();
         }
         //print movies in relation to a popularity level
@@ -89,7 +87,7 @@ public class MovieParser {
             //280 because highest in data is 271
             System.out.print("Enter a value between 0.0 and 280.0, inclusive:");
             double popularity = scan.nextDouble();
-            MovieCollection.exceedPop( movieList, popularity );
+            System.out.print( MovieCollection.exceedPop( movieList, popularity ));
             System.out.println();
         }
         System.out.print("Thanks for using my program!");
@@ -103,6 +101,14 @@ public class MovieParser {
         System.out.println("Welcome to my dope-ass movie gson project!");
         System.out.println("We can print a couple lists of movies, depending on what you're " +
                 "looking for!");
+        System.out.print("If you want all the movies, enter 1\n" +
+                "If you want movies from a certain genre, enter 2\n" +
+                "If you want movies exceeding a certain vote, enter 3\n" +
+                "If you want movies exceeding a certain popularity, enter 4: ");
+    }
+
+    public static void validInput() {
+        System.out.println("Please enter a valid number.");
         System.out.print("If you want all the movies, enter 1\n" +
                 "If you want movies from a certain genre, enter 2\n" +
                 "If you want movies exceeding a certain vote, enter 3\n" +

@@ -22,57 +22,69 @@ public class MovieCollection {
     }
 
     /**
-     * Prints titles of all movies
+     * Prints all movies
      * @param results
+     * @return String list of all movie titles on separate lines
      */
-    public static void allMovies( MovieObject[] results ) {
+    public static String allMovies( MovieObject[] results ) {
+        String list = "";
         for( int index = 0; index < results.length; index++ ) {
-            System.out.println( results[index].getTitle() );
+            list += (results[index].getTitle()  + "\n");
         }
+        return list;
     }
 
     /**
-     * Prints titls of movies belonging to a specified genre
+     * Prints movies from a selected genre
      * @param results
      * @param genre
+     * @return String list of genre-specific movies on separate lines
      */
-    public static void genre( MovieObject[] results, int genre ) {
+    public static String genre( MovieObject[] results, int genre ) {
+        String list = "";
         System.out.println();
         for( int index = 0; index < results.length; index++ ) {
             int[] genreList = results[index].getGenre_ids();
             for( int IDnum = 0; IDnum < genreList.length; IDnum++ ) {
                 if (genreList[IDnum] == genre) {
-                    System.out.println(results[index].getTitle());
+                    list += (results[index].getTitle() + "\n");
                 }
             }
         }
+        return list;
     }
 
     /**
-     * Prints movies above a specified vote_average value
+     * Prints movies above a specified vote count
      * @param results
      * @param threshold
+     * @return String list of movies exceeding a specified vote on separate lines
      */
-    public static void exceedVotes( MovieObject[] results, double threshold ) {
+    public static String exceedVotes( MovieObject[] results, double threshold ) {
+        String list = "";
         System.out.print( "\nMovies above your specified vote:\n" );
         for( int index = 0; index < results.length; index++ ) {
             if( results[index].getVote_average() > threshold ) {
-                System.out.println( results[index].getTitle() );
+                list += ( results[index].getTitle() + "\n");
             }
         }
+        return list;
     }
 
     /**
-     * Prints movies above a specified popularity value
+     * Prints movies above a specified popularity level
      * @param results
      * @param pop
+     * @return String list of movies exceeding a specified popularity on separate lines
      */
-    public static void exceedPop( MovieObject[] results, double pop ) {
+    public static String exceedPop( MovieObject[] results, double pop ) {
+        String list = "";
         System.out.println( "Movies above your specified popularity:\n" );
         for( int index = 0; index < results.length; index++ ) {
             if( results[index].getPopularity() > pop ) {
-                System.out.println( results[index].getTitle() );
+                list += ( results[index].getTitle() + "\n");
             }
         }
+        return list;
     }
 }
