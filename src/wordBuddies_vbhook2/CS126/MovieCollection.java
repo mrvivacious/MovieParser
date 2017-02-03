@@ -18,7 +18,6 @@ public class MovieCollection {
      */
     public MovieObject[] getResults() {
         return results;
-
     }
 
     /**
@@ -62,7 +61,7 @@ public class MovieCollection {
      */
     public static String exceedVotes( MovieObject[] results, double threshold ) {
         String list = "";
-        System.out.print( "\nMovies above your specified vote:\n" );
+        System.out.print( "\nMovies above your specified vote:\n\n" );
         for( int index = 0; index < results.length; index++ ) {
             if( results[index].getVote_average() > threshold ) {
                 list += ( results[index].getTitle() + "\n");
@@ -79,7 +78,7 @@ public class MovieCollection {
      */
     public static String exceedPop( MovieObject[] results, double pop ) {
         String list = "";
-        System.out.println( "Movies above your specified popularity:\n" );
+        System.out.println( "\nMovies above your specified popularity:\n" );
         for( int index = 0; index < results.length; index++ ) {
             if( results[index].getPopularity() > pop ) {
                 list += ( results[index].getTitle() + "\n");

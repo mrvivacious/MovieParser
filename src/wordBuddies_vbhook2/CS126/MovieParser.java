@@ -4,19 +4,19 @@ package wordBuddies_vbhook2.CS126;
  * Created by vbhook2
  */
 
-//?? Test cases. Upload to svn. genre validize input
+//?? Test cases
 import com.google.gson.Gson;
-
 import java.util.Scanner;
+
 /**
  * This class will use gson to extract specified data from a json array of movies
  */
 public class MovieParser {
+    //static in order to call inside the test file
     public static Gson gson = new Gson();
     public static Scanner scan = new Scanner(System.in);
     public static MovieCollection collector = gson.fromJson(JsonText.Json, MovieCollection.class);
     public static MovieObject[] movieList = collector.getResults();
-    //Bad style practice, forgive meeeeeeeeeeeeeee
     public final static String genreList = "The list of all genres, along with their respective IDs:\n" +
             "Action      28\n" +
             "Adventure   12\n" +
@@ -44,50 +44,49 @@ public class MovieParser {
      * @param args
      */
     public static void main(String[] args) {
-
-        int all = 1;
-        int genres = 2;
-        int vote = 3;
-        int popular = 4;
+        String all = "1";
+        String genres = "2";
+        String vote = "3";
+        String popular = "4";
 
         //helper function
         welcomeMessage();
-
-        int userInput = scan.nextInt();
+        String userInput = scan.nextLine();
         System.out.println();
-        while( userInput != all && userInput != genres && userInput != vote && userInput != popular ) {
+
+        while( !userInput.equals(all) && !userInput.equals(genres) && !userInput.equals(vote) && !userInput.equals(popular) ) {
+            //helper function
             validInput();
-            userInput = scan.nextInt();
+            userInput = scan.nextLine();
             System.out.println();
         }
-
         //print all movies
-        if ( userInput == all ) {
+        if ( userInput.equals(all) ) {
             System.out.print( MovieCollection.allMovies( movieList ) );
             System.out.println();
         }
         //print genre-specific movies
-        if ( userInput == genres ) {
+        if ( userInput.equals(genres) ) {
             System.out.println( genreList );
-            System.out.print("Enter the desired genre's ID:");
+            System.out.print("Enter the desired genre's ID: ");
             int ID = scan.nextInt();
             System.out.print( MovieCollection.genre( movieList, ID ));
             System.out.println();
         }
         //print movies in relation to a vote number
-        if ( userInput == vote ) {
+        if ( userInput.equals(vote) ) {
             //9 because highest in data is 8.1
-            System.out.print("Enter a vote between 0.0 and 9.0, inclusive:");
+            System.out.print("Enter a vote between 0.0 and 9.0, inclusive: ");
             double votes = scan.nextDouble();
-            System.out.print( MovieCollection.exceedVotes( movieList, votes ));
+            System.out.print( MovieCollection.exceedVotes( movieList, validVote(votes) ));
             System.out.println();
         }
         //print movies in relation to a popularity level
-        if ( userInput == popular ) {
+        if ( userInput.equals(popular) ) {
             //280 because highest in data is 271
-            System.out.print("Enter a value between 0.0 and 280.0, inclusive:");
+            System.out.print("Enter a value between 0.0 and 280.0, inclusive: ");
             double popularity = scan.nextDouble();
-            System.out.print( MovieCollection.exceedPop( movieList, popularity ));
+            System.out.print( MovieCollection.exceedPop( movieList, validPop(popularity) ));
             System.out.println();
         }
         System.out.print("Thanks for using my program!");
@@ -107,11 +106,41 @@ public class MovieParser {
                 "If you want movies exceeding a certain popularity, enter 4: ");
     }
 
+    /**
+     * Helper function
+     * Saves space in the main function. Prints out the prompt should user enter an invalid value
+     */
     public static void validInput() {
         System.out.println("Please enter a valid number.");
         System.out.print("If you want all the movies, enter 1\n" +
                 "If you want movies from a certain genre, enter 2\n" +
                 "If you want movies exceeding a certain vote, enter 3\n" +
                 "If you want movies exceeding a certain popularity, enter 4: ");
+    }
+
+    /**
+     * Confirms that value is inside our parameters, else prompts for a new value
+     * @param votes
+     * @return
+     */
+    public static double validVote(double votes) {
+        while (votes < 0 || votes > 9) {
+            System.out.print("Please enter a vote between 0.0 and 9.0, inclusive: ");
+            votes = scan.nextDouble();
+        }
+        return votes;
+    }
+
+    /**
+     * Confirms that value is inside our parameters, else prompts for a new value
+     * @param popularity
+     * @return
+     */
+    public static double validPop(double popularity) {
+        while (popularity < 0 || popularity > 280) {
+            System.out.print("Please enter a value between 0.0 and 280.0, inclusive: ");
+            popularity = scan.nextDouble();
+        }
+        return popularity;
     }
 }
